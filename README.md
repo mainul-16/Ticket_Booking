@@ -16,9 +16,9 @@ This website simulates the experience of browsing and booking movie/event ticket
 - 📱 Responsive UI for mobile and desktop<br>
 - 🧑 Admin-like panel to add/edit dummy data (optional)<br>
 
-> **Note:** All data is static/dummy. No real bookings or backend logic.<br><br>
+> **Note:** All data is static/dummy. No real bookings or backend logic. <br><br>
 
-## 🛠️ Tech Stack<br><br
+## 🛠️ Tech Stack<br><br>
 
 - **Framework:** React.js<br>
 - **Styling:** Tailwind CSS<br>
