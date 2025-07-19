@@ -14,7 +14,7 @@ This website simulates the experience of browsing and booking movie/event ticket
 - 📝 View show details (title, timing, rating, etc.)<br>
 - 🎫 Simulated ticket booking flow<br>
 - 📱 Responsive UI for mobile and desktop<br>
-- 🧑 Admin-like panel to add/edit dummy data (optional)<br>
+- 🧑 Admin-like panel to add/edit dummy data <br>
 
 > **Note:** All data is static/dummy. No real bookings or backend logic. <br><br>
 
