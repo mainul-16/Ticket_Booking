@@ -2,8 +2,8 @@
 <h1>E-Commerce Website</h1>
 
 <br>
-# 🎟️ Ticket Booking Website
-## 🖥️ Overview
+# 🎟️ Ticket Booking Website<br>
+## 🖥️ Overview<br>
 
 This website simulates the experience of browsing and booking movie/event tickets. Users can view available shows, explore details,<br> and go through a booking flow (non-functional for now). It's perfect for learning or portfolio purposes.
 <br><br>
