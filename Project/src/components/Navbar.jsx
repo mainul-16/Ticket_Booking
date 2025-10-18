@@ -24,8 +24,11 @@ const Navbar = () => {
         <XIcon className='md:hidden absolute top-6 right-6 w-6 h-6 cursor-pointer' onClick={() => setIsOpen(!isOpen)} />
 
         <Link onClick={() => {scrollTo(0,0); setIsOpen(false)}} to="/" className='text-red-500'>Home</Link>
-        <Link onClick={() => {scrollTo(0,0); setIsOpen(false)}} to="/pages/Theaters" className='text-red-500'>Theaters</Link>
-        <Link onClick={() => {scrollTo(0,0); setIsOpen(false)}} to="/pages/Releases" className='text-red-500'>Releases</Link>
+        <Link onClick={() => {scrollTo(0,0); setIsOpen(false)}} to="/Project/src/pages/Theaters" className='text-red-500'>Theaters</Link>
+        <Link onClick={() => {scrollTo(0,0); setIsOpen(false)}} to="/Project/src/pages/Releases" className='text-red-500'>Releases</Link>
+        <Link onClick={() => {scrollTo(0,0); setIsOpen(false)}} to="/Project/src/pages/Movies.jsx"className='text-red-500'>Movies</Link>
+        <Link onClick={() => {scrollTo(0,0); setIsOpen(false)}} to="/Project/src/pages/Favorite.jsx"className='text-red-500'>Favorites</Link>
+
 
       </div>
 
