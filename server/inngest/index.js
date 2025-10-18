@@ -1,4 +1,4 @@
-import User from "../models/User"
+import User from "../models/User.js"
 import { Inngest } from "inngest"
 
 export const inngest = new Inngest({ id: "move-ticket-booking" })
