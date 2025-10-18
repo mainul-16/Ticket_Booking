@@ -123,17 +123,6 @@ TICKET_BOOKING/
 
 ---
 
-## 🦖 Play the Dino Game!
-
-Feeling bored while your server restarts?
-Enjoy this classic **Chrome Dino Game** while waiting! 👇
-
-[![Play Dino Game](https://i.imgur.com/LLs7Q3V.gif)](https://codepen.io/100xdevs/full/zYyQbYw)
-
-> 🎮 Click the image above to play the game instantly!
-
----
-
 ## 🧠 Future Enhancements
 
 * 💳 Payment gateway integration (Stripe / Razorpay)
