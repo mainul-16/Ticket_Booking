@@ -23,11 +23,11 @@ const App = () => {
      {!isAdminRoute && <Navbar/>}
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/Movies' element={<Movies />} />
+        <Route path='/Project/src/pages/Movies.jsx' element={<Movies />} />
         <Route path='/Movies/:id' element={<MovieDetails />} />
         <Route path='/Movies/:id/:date' element={<SeatLayout />} />
         <Route path='/my-bookings' element={<MyBookings />} />
-        <Route path='/favourites' element={<Favorite />} />
+        <Route path='/Project/src/pages/Favorite.jsx' element={<Favorite />} />
         <Route path='/admin/*' element={<Layout/>}>
           <Route index element ={<Dashboard />}/>
           <Route path="add-shows" element ={<AddShows />}/>

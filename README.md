@@ -1,9 +1,15 @@
-# FUTURE_FS_02<br><br>
+# Ticket Booking<br><br>
 <h1>E-Commerce Website</h1>
 
 <br>
 # 🎟️ Ticket Booking Website<br>
 ## 🖥️ Overview<br>
+# Ticket Booking<br><br>
+<h1>E-Commerce Website</h1>
+
+<br>
+# 🎟️ Ticket Booking Website
+## 🖥️ Overview
 
 This website simulates the experience of browsing and booking movie/event tickets. Users can view available shows, explore details,<br> and go through a booking flow (non-functional for now). It's perfect for learning or portfolio purposes.
 <br><br>
@@ -24,5 +30,5 @@ This website simulates the experience of browsing and booking movie/event ticket
 - **Styling:** Tailwind CSS<br>
 - **Icons:** Lucide React<br><br>
 
-Preview -https://future-fs-02-jfmgqrsjp-mainul-16s-projects.vercel.app<br>
-> For accesing admin panel : https://future-fs-02-jfmgqrsjp-mainul-16s-projects.vercel.app/admin
+Preview -<br>
+> For accesing admin panel : 
