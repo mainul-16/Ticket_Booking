@@ -24,5 +24,5 @@ This website simulates the experience of browsing and booking movie/event ticket
 - **Styling:** Tailwind CSS<br>
 - **Icons:** Lucide React<br><br>
 
-Preview -https://future-fs-02-jfmgqrsjp-mainul-16s-projects.vercel.app<br>
-> For accesing admin panel : https://future-fs-02-jfmgqrsjp-mainul-16s-projects.vercel.app/admin
+Preview -n/a<br>
+> For accesing admin panel : na
