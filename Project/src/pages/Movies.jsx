@@ -11,8 +11,15 @@ const Movies = () => {
     ? shows
     : (shows?.shows || shows?.data?.shows || [])
 
-  const displayShows = (Array.isArray(showsArray) && showsArray.length > 0 ? showsArray : dummyShowsData)
+  // Extract movies
+  const movies = (Array.isArray(showsArray) && showsArray.length > 0 ? showsArray : dummyShowsData)
     .map(item => item.movie || item)
+    .filter(movie => movie) // Remove null/undefined
+
+  // Remove duplicates based on _id or id
+  const uniqueMovies = Array.from(
+    new Map(movies.map(movie => [movie._id || movie.id, movie])).values()
+  )
 
   return (
     <div className="relative px-6 md:px-16 lg:px-40 xl:px-44 overflow-hidden py-12 min-h-[80vh] pt-32">
@@ -21,12 +28,15 @@ const Movies = () => {
       <BlurCircle bottom="50px" right="50px" />
 
       {/* Foreground Content */}
-      {displayShows.length > 0 ? (
+      {uniqueMovies.length > 0 ? (
         <div className="relative z-10">
           <h1 className="text-lg font-medium my-6 text-red-500">New Releases</h1>
           <div className="flex flex-wrap max-sm:justify-center gap-8">
-            {displayShows.map((movie) => (
-              <MovieCard key={movie._id || movie.id} movie={movie} />
+            {uniqueMovies.map((movie, index) => (
+              <MovieCard
+                key={movie._id || movie.id || index} // unique key
+                movie={movie}
+              />
             ))}
           </div>
         </div>
