@@ -136,7 +136,6 @@ TICKET_BOOKING/
 ## 📬 Contact
 
 * **Developer:** Md. Mainul Islam
-* **GitHub:** [@yourusername](https://github.com/mainul-16)
 * **Project Link:** [Movie Ticket Booking](link)
 
 ---
