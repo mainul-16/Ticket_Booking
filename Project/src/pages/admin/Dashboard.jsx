@@ -6,13 +6,17 @@ import {
   UsersIcon,
   StarIcon
 } from 'lucide-react'
-import { dummyDashboardData } from '../../assets/assets'
 import Loading from '../../components/Loading'
 import Title from '../../components/admin/Title'
 import BlurCircle from '../../components/BlurCircle'
 import dateFormat from '../../lib/dateFormat' // ✅ Adjust path if needed
+import { useAppContext } from '../../context/AppContext'
+import toast from 'react-hot-toast'
 
 const Dashboard = () => {
+
+  const { axios, getToken, user, image_base_url } = useAppContext()
+
   const currency = import.meta.env.VITE_CURRENCY 
 
   const [dashboardData, setDashboardData] = useState({
@@ -32,7 +36,7 @@ const Dashboard = () => {
     },
     {
       title: "Total Revenue",
-      value: currency + dashboardData.totalRevenue || "0",
+      value: currency + (dashboardData.totalRevenue || "0"),
       icon: CircleDollarSignIcon
     },
     {
@@ -42,20 +46,33 @@ const Dashboard = () => {
     },
     {
       title: "Total Users",
-      value: dashboardData.totalUsers || "0",
+      // ✅ Fixed Total Users display
+      value: dashboardData.totalUsers ?? "0",
       icon: UsersIcon
     }
   ]
 
   const fetchDashboardData = async () => {
-    // Simulated API call
-    setDashboardData(dummyDashboardData)
-    setLoading(false)
-  }
+   try {
+    const { data } = await axios.get("/api/admin/dashboard", {headers: {Authorization: `Bearer ${await getToken()}`}})
+    if(data.success){
+      setDashboardData(data.dashboardData)
+      setLoading(false)
+    } else{
+      toast.error(data.message)
+    }
+   } catch (error) {
+      toast.error("Error fetching Dashboard Data")
+      console.error(error)
+   }
+  };
 
   useEffect(() => {
-    fetchDashboardData()
-  }, [])
+    if(user){
+      fetchDashboardData()
+    }
+    
+  }, [user])
 
   if (loading) return <Loading />
 
@@ -91,7 +108,7 @@ const Dashboard = () => {
             className="w-56 rounded-lg overflow-hidden h-full pb-3 bg-primary/10 border border-primary/20 hover:-translate-y-1 transition duration-300"
           >
             <img
-              src={show.movie.poster_path}
+              src={image_base_url + show.movie.poster_path}
               alt={show.movie.title || "Movie Poster"}
               className="h-60 w-full object-cover"
             />

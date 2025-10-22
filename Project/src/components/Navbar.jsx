@@ -1,17 +1,19 @@
 import { assets } from '../assets/assets'
 import { MenuIcon, SearchIcon, TicketPlus, XIcon } from 'lucide-react'
-import { Link, useNavigate} from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import React, { useState } from 'react'
 import { useClerk, UserButton, useUser } from '@clerk/clerk-react'
-
+import { useAppContext } from '../context/AppContext'
 
 const Navbar = () => {
 
-  const [isOpen , setIsOpen] = useState(false);
-  const {user} = useUser()
-  const {openSignIn} = useClerk()
+  const [isOpen, setIsOpen] = useState(false);
+  const { user } = useUser()
+  const { openSignIn } = useClerk()
   const navigate = useNavigate()
 
+  const { favoriteMovies } = useAppContext()
+  
 
   return (
     <div className='fixed top-0 left-0 z-50 w-full flex items-center justify-between px-6 md:px-16 lg:px-36 py-5'>
@@ -23,12 +25,11 @@ const Navbar = () => {
 
         <XIcon className='md:hidden absolute top-6 right-6 w-6 h-6 cursor-pointer' onClick={() => setIsOpen(!isOpen)} />
 
-        <Link onClick={() => {scrollTo(0,0); setIsOpen(false)}} to="/" className='text-red-500'>Home</Link>
-        <Link onClick={() => {scrollTo(0,0); setIsOpen(false)}} to="/Project/src/pages/Theaters" className='text-red-500'>Theaters</Link>
-        <Link onClick={() => {scrollTo(0,0); setIsOpen(false)}} to="/Project/src/pages/Releases" className='text-red-500'>Releases</Link>
-        <Link onClick={() => {scrollTo(0,0); setIsOpen(false)}} to="/Project/src/pages/Movies.jsx"className='text-red-500'>Movies</Link>
-        <Link onClick={() => {scrollTo(0,0); setIsOpen(false)}} to="/Project/src/pages/Favorite.jsx"className='text-red-500'>Favorites</Link>
-
+        <Link onClick={() => { scrollTo(0, 0); setIsOpen(false) }} to="/" className='text-red-500'>Home</Link>
+        <Link onClick={() => { scrollTo(0, 0); setIsOpen(false) }} to="/theaters" className='text-red-500'>Theaters</Link>
+        <Link onClick={() => { scrollTo(0, 0); setIsOpen(false) }} to="/releases" className='text-red-500'>Releases</Link>
+        <Link onClick={() => { scrollTo(0, 0); setIsOpen(false) }} to="/movies" className='text-red-500'>Movies</Link>
+        {favoriteMovies.length > 0 && <Link onClick={() => { scrollTo(0, 0); setIsOpen(false) }} to="/favorites" className='text-red-500'>Favorites</Link>}
 
       </div>
 
@@ -37,17 +38,16 @@ const Navbar = () => {
         {
           !user ? (
             <button onClick={openSignIn} className='px-4 py-1 sm:px-7 sm:py-2 bg-primary hover:bg-primary-dull transition rounded-full font-medium cursor-pointer'>Login</button>
-          ) :(
-           <UserButton>
+          ) : (
+            <UserButton>
               <UserButton.MenuItems>
-                <UserButton.Action label='My Bookings' labelIcon={<TicketPlus width={15}/>} onClick={() => navigate('/my-bookings') } />
+                <UserButton.Action label='My Bookings' labelIcon={<TicketPlus width={15} />} onClick={() => navigate('/my-bookings')} />
               </UserButton.MenuItems>
-           </UserButton>
+            </UserButton>
           )
         }
-
-        
       </div>
+
       <MenuIcon className='max-md:ml-4 md:hidden w-8 h-8 cursor-pointer' onClick={() => setIsOpen(!isOpen)} />
     </div>
   )

@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { assets } from '../assets/assets'
 import { ArrowRight, CalendarIcon, ClockIcon } from 'lucide-react'
-import bgImage from '../assets/backgroundImage.png'  // 👈 import the image here
+import bgImage from '../assets/backgroundImage.png'
 
 const HeroSection = () => {
   const navigate = useNavigate()
@@ -9,7 +9,7 @@ const HeroSection = () => {
   return (
     <div
       className='flex flex-col items-start justify-center gap-4 px-6 md:px-16 bg-cover bg-center h-screen'
-      style={{ backgroundImage: `url(${bgImage})` }}  // 👈 apply it inline
+      style={{ backgroundImage: `url(${bgImage})` }}
     >
       <img src={assets.marvelLogo} alt="" className="max-h-11 lg:h-11 mt-20" />
 
@@ -33,7 +33,7 @@ const HeroSection = () => {
       </p>
 
       <button
-        onClick={() => navigate('/Project/src/pages/Movies.jsx')}
+        onClick={() => navigate('/movies')} // ✅ Use the route, not the file path
         className='flex items-center gap-1 px-6 py-3 text-sm bg-primary hover:bg-primary-dull transition rounded-full font-medium cursor-pointer'
       >
         Explore Movies
