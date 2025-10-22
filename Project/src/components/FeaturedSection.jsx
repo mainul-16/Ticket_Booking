@@ -19,11 +19,11 @@ const FeaturedSection = () => {
     .map(item => item.movie || item)
 
   return (
-    <div className="px-6 md:px-16 lg:px-24 xl:px-44 overflow-hidden mt-20">
+    <div className="relative px-4 md:px-10 lg:px-16 xl:px-20 overflow-hidden">
       {/* Header */}
       <div className="relative flex items-center justify-between pt-20 pb-10">
         <BlurCircle top="0" right="-80px" />
-        <p className="text-red-500 font-medium text-lg">Now Showing</p>
+        <p className="text-lg font-medium text-red-500">Now Showing</p>
         <button
           onClick={() => navigate('/movies')}
           className="group flex items-center gap-2 text-sm text-gray-300 cursor-pointer"
