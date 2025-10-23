@@ -26,7 +26,7 @@ const TrailersSection = () => {
               window.open(t.videoUrl, "_blank");
             }}
             className={`relative group h-24 w-40 rounded-md overflow-hidden shadow-md transition-all duration-200 hover:scale-105 
-            ${i === currentTrailer ? 'ring-4 ring-red-600' : ''}`}
+            ${i === currentTrailer ? '' : ''}`}
           >
             {/* Thumbnail Image */}
             <img
@@ -39,7 +39,7 @@ const TrailersSection = () => {
             <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition" />
 
             {/* Play icon */}
-            <div className="absolute inset-0 flex items-center justify-center text-gray-700">
+            <div className="absolute inset-0 flex items-center justify-center text-white-500">
               <FaPlay className="text-xl opacity-80 group-hover:scale-110 transition-transform" />
             </div>
 
