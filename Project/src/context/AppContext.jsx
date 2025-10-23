@@ -101,7 +101,7 @@ export const AppProvider = ({ children }) => {
         if (isCurrentlyFavorite) {
           // Movie will be removed - no toast message
         } else {
-          toast.success("First Your Favorite Movies is added 🥳");
+          toast.success(" Your First Favorite Movies is added 🥳");
         }
       } else {
         toast.error(data.message || "Failed to update favorites");
