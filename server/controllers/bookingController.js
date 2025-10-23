@@ -23,20 +23,29 @@ const checkSeatsAvailability = async (showID, selectedSeats) => {
 export const createBooking = async (req, res)=>{
   try {
 
-    const {userId} = req.auth();
+    const userId = req.auth().userId;
     const {showId, selectedSeats} = req.body;
     const { origin } = req.headers;
 
+    console.log('Booking request received:', { userId, showId, selectedSeats });
 
     // Check if the seat is available for the selected show
     const isAvailable = await checkSeatsAvailability(showId, selectedSeats)
 
+    console.log('Seat availability check:', isAvailable);
 
     if(!isAvailable){
       return res.json({success: false, message: "Selected Seats are not available."})
     }
     // Get the show details
     const showData = await Show.findById(showId).populate('movie');
+
+    if (!showData) {
+      console.log('Show not found for ID:', showId);
+      return res.json({success: false, message: "Show not found"});
+    }
+
+    console.log('Show data found:', showData._id);
 
 // Create a new booking
     const booking = await Booking.create({
@@ -46,6 +55,7 @@ export const createBooking = async (req, res)=>{
         bookedSeats: selectedSeats
 })
 
+    console.log('Booking created:', booking._id);
 
 selectedSeats.map((seat)=>{
   showData.occupiedSeats[seat] = userId;
@@ -55,6 +65,8 @@ showData.markModified('occupiedSeats');
 
 await showData.save();
 
+console.log('Show updated with occupied seats');
+
 //stripe Gateway Initialize
 
 
@@ -62,7 +74,7 @@ await showData.save();
 res.json({success: true, message: 'Booked successfully'})
 
   } catch(error){
-    console.log(error.message);
+    console.log('Booking error:', error.message);
     res.json({success: false, message: error.message})
     
   }
