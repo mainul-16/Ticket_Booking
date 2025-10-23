@@ -123,6 +123,7 @@ export const getShows = async (req, res) => {
 export const getShow = async (req, res) => {
   try {
     const { movieId } = req.params;
+    console.log("Fetching show for movie ID:", movieId);
 
     // Get movie details
     const movie = await Movie.findById(movieId).select(
@@ -130,8 +131,11 @@ export const getShow = async (req, res) => {
     );
 
     if (!movie) {
+      console.log("Movie not found for ID:", movieId);
       return res.json({ success: false, message: "Movie not found" });
     }
+
+    console.log("Found movie:", movie.title);
 
     // Start of today
     const today = new Date();
@@ -142,6 +146,8 @@ export const getShow = async (req, res) => {
       movie: movieId,
       showDateTime: { $gte: today }
     }).sort({ showDateTime: 1 });
+
+    console.log("Found shows:", shows.length);
 
     // Group shows by date
     const dateTime = {};
@@ -157,6 +163,8 @@ export const getShow = async (req, res) => {
       });
     });
 
+    console.log("Grouped shows by date:", Object.keys(dateTime));
+
     res.json({
       success: true,
       show: {
@@ -165,7 +173,7 @@ export const getShow = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error(error);
+    console.error("Error in getShow:", error);
     res.json({ success: false, message: error.message });
   }
 };

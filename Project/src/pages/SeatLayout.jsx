@@ -6,6 +6,7 @@ import { ArrowRightIcon, ClockIcon } from 'lucide-react'
 import isoTimeFormat from '../lib/isoTimeFormat'
 import BlurCircle from '../components/BlurCircle'
 import toast from 'react-hot-toast'
+import { useAppContext } from '../context/AppContext'
 
 const SeatLayouts = () => {
   const groupRows = [["A", "B"], ["C", "D"], ["E", "F"], ["G", "H"], ["I", "J"]]
@@ -17,13 +18,31 @@ const SeatLayouts = () => {
 
   const navigate = useNavigate()
 
+  const { axios, getToken, user } = useAppContext();
+
+  // Debug the date parameter
+  console.log("Date parameter from URL:", date);
+  console.log("Date type:", typeof date);
+  
+
   const getShow = async () => {
-    const show = dummyShowsData.find(show => show._id === id)
-    if (show) {
-      setShow({
-        movie: show,
-        dateTime: dummyDateTimeData
-      })
+    try {
+      console.log("Fetching show for ID:", id);
+      const { data } = await axios.get(`/api/show/${id}`)
+      console.log("Show API response:", data);
+      
+      if(data.success){
+        setShow(data.show || data)
+        console.log("Show data set successfully");
+        console.log("Show data structure:", data.show);
+        console.log("Available dates:", Object.keys(data.show?.dateTime || {}));
+      } else {
+        console.error("API returned error:", data.message);
+        toast.error(data.message || "Failed to fetch show details");
+      }
+    } catch (error) {
+      console.error("Error fetching show:", error);
+      toast.error("Failed to fetch show details");
     }
   }
 
@@ -73,20 +92,28 @@ const SeatLayouts = () => {
       <div className='w-60 bg-primary/10 border border-primary/20 rounded-lg py-10 h-max md:sticky md:top-30'>
         <p className='text-lg font-semibold px-6'>Available Timings</p>
         <div className='mt-5 space-y-1'>
-          {show.dateTime[date]?.map((item) => (
-            <div
-              key={item.time}
-              onClick={() => setSelectedTime(item)}
-              className={`flex items-center gap-2 px-6 py-2 w-max rounded-r-md cursor-pointer transition ${
-                selectedTime?.time === item.time
-                  ? "bg-primary text-white"
-                  : "hover:bg-primary/20"
-              }`}
-            >
-              <ClockIcon className='w-4 h-4' />
-              <p className='text-sm'>{isoTimeFormat(item.time)}</p>
+          {show.dateTime && show.dateTime[date] && show.dateTime[date].length > 0 ? (
+            show.dateTime[date].map((item) => (
+              <div
+                key={item.time}
+                onClick={() => setSelectedTime(item)}
+                className={`flex items-center gap-2 px-6 py-2 w-max rounded-r-md cursor-pointer transition ${
+                  selectedTime?.time === item.time
+                    ? "bg-primary text-white"
+                    : "hover:bg-primary/20"
+                }`}
+              >
+                <ClockIcon className='w-4 h-4' />
+                <p className='text-sm'>{isoTimeFormat(item.time)}</p>
+              </div>
+            ))
+          ) : (
+            <div className='px-6 py-4 text-center text-gray-500'>
+              <p>No shows available for this date</p>
+              <p className='text-xs mt-1'>Selected date: {date}</p>
+              <p className='text-xs'>Available dates: {Object.keys(show.dateTime || {}).join(', ')}</p>
             </div>
-          ))}
+          )}
         </div>
       </div>
 
@@ -112,7 +139,21 @@ const SeatLayouts = () => {
           ))}
         </div>
         </div>
-        <button onClick={() => navigate('/my-bookings') }
+        <button onClick={() => {
+          if (!user) {
+            toast.error("Please login to proceed with booking");
+            return;
+          }
+          if (!selectedTime) {
+            toast.error("Please select a time first");
+            return;
+          }
+          if (selectedSeats.length === 0) {
+            toast.error("Please select at least one seat");
+            return;
+          }
+          navigate('/my-bookings');
+        }}
         className='flex items-center gap-1 mt-20 px-10 py-3 text-sm bg-primary hover:bg-primary-dull transition rounded-full font-medium cursor-pointer active:scale-95'>Proceed To Checkout<ArrowRightIcon strokeWidth={3} className='h-4 w-4'/></button>
        
       </div>
