@@ -103,8 +103,6 @@ export const AppProvider = ({ children }) => {
         } else {
           toast.success(" Your First Favorite Movies is added 🥳");
         }
-      } else {
-        toast.error(data.message || "Failed to update favorites");
       }
     } catch (error) {
       console.log("Error updating favorites:", error);
