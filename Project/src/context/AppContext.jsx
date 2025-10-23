@@ -43,22 +43,17 @@ export const AppProvider = ({ children }) => {
   // ✅ Fetch all shows
   const fetchShows = async () => {
     try {
-      console.log("Fetching shows from API...");
       const { data } = await axios.get("/api/show/all");
-      console.log("API Response:", data); // Debug log
-      
       if (data.success) {
-        console.log("Shows fetched successfully:", data.shows?.length || 0, "shows");
         setShows(data.shows || []);
       } else {
-        console.error("API returned error:", data.message);
         toast.error(data.message || "Failed to fetch shows");
-        setShows([]); // Set empty array on error
+        setShows([]);
       }
     } catch (error) {
       console.error("Error fetching shows:", error);
       toast.error("Failed to fetch shows");
-      setShows([]); // Set empty array on error
+      setShows([]);
     }
   };
 
@@ -80,28 +75,33 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  // ✅ Update favorite movies
+  // ✅ Update favorite movies with toast messages
   const updateFavorite = async (movie) => {
     try {
       const token = await getToken();
       const movieId = movie._id || movie.id;
-      
+
+      // Check if movie is currently in favorites
+      const isCurrentlyFavorite = favoriteMovies.some(
+        m => m._id === movie._id || m.id === movie.id
+      );
+
       // Call API to update favorites in database
-      const { data } = await axios.post("/api/user/update-favorite", 
-        { movieId }, 
+      const { data } = await axios.post(
+        "/api/user/update-favorite",
+        { movieId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
       if (data.success) {
-        // Refresh favorites from server to ensure consistency
+        // Refresh favorites from server
         await fetchFavoritesMovies();
-        
-        // Show appropriate toast message
-        const isCurrentlyFavorite = favoriteMovies.some(m => m._id === movie._id || m.id === movie.id);
+
+        // Show toast based on action
         if (isCurrentlyFavorite) {
-          // Movie will be removed - no toast message
+          toast.error(`${movie.title || "Movie"} removed from favorites`);
         } else {
-          toast.success("Movie added to favorites");
+          toast.success(`${movie.title || "Movie"} added to favorites`);
         }
       } else {
         toast.error(data.message || "Failed to update favorites");
@@ -138,7 +138,7 @@ export const AppProvider = ({ children }) => {
     fetchIsAdmin,
     updateFavorite,
     image_base_url
-  }
+  };
 
   return (
     <AppContext.Provider value={value}>

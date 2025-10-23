@@ -6,18 +6,13 @@ import { useClerk, UserButton, useUser } from '@clerk/clerk-react'
 import { useAppContext } from '../context/AppContext'
 
 const Navbar = () => {
-
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useUser()
   const { openSignIn } = useClerk()
   const navigate = useNavigate()
-
   const { favoriteMovies } = useAppContext()
   
-  const closeMobileMenu = () => {
-    setIsOpen(false);
-  };
-
+  const closeMobileMenu = () => setIsOpen(false);
   const scrollToTop = () => {
     window.scrollTo(0, 0);
     closeMobileMenu();
@@ -36,8 +31,15 @@ const Navbar = () => {
         <Link onClick={scrollToTop} to="/releases" className='text-red-500 hover:text-red-400 transition-colors'>Releases</Link>
         <Link onClick={scrollToTop} to="/movies" className='text-red-500 hover:text-red-400 transition-colors'>Movies</Link>
         {favoriteMovies.length > 0 && (
-          <Link onClick={scrollToTop} to="/favorites" className='text-red-500 hover:text-red-400 transition-colors flex items-center gap-1'>
-            Favorites ({favoriteMovies.length})
+          <Link 
+            onClick={scrollToTop} 
+            to="/favorites" 
+            className='text-red-500 hover:text-red-400 transition-colors flex items-center gap-2'
+          >
+            Favorites
+            <span className='bg-red-500 text-white text-xs font-medium px-2 py-0.5 rounded-full'>
+              {favoriteMovies.length}
+            </span>
           </Link>
         )}
       </div>
@@ -51,7 +53,11 @@ const Navbar = () => {
           ) : (
             <UserButton>
               <UserButton.MenuItems>
-                <UserButton.Action label='My Bookings' labelIcon={<TicketPlus width={15} />} onClick={() => navigate('/my-bookings')} />
+                <UserButton.Action 
+                  label='My Bookings' 
+                  labelIcon={<TicketPlus width={15} />} 
+                  onClick={() => navigate('/my-bookings')} 
+                />
               </UserButton.MenuItems>
             </UserButton>
           )
@@ -59,7 +65,10 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu Button */}
-      <MenuIcon className='md:hidden w-8 h-8 cursor-pointer hover:text-red-500 transition-colors' onClick={() => setIsOpen(true)} />
+      <MenuIcon 
+        className='md:hidden w-8 h-8 cursor-pointer hover:text-red-500 transition-colors' 
+        onClick={() => setIsOpen(true)} 
+      />
 
       {/* Mobile Overlay */}
       {isOpen && (
@@ -85,41 +94,20 @@ const Navbar = () => {
 
         {/* Mobile Navigation Links */}
         <div className='flex flex-col p-6 space-y-6'>
-          <Link 
-            onClick={scrollToTop} 
-            to="/" 
-            className='text-white text-lg font-medium hover:text-red-500 transition-colors py-2'
-          >
-            Home
-          </Link>
-          <Link 
-            onClick={scrollToTop} 
-            to="/theaters" 
-            className='text-white text-lg font-medium hover:text-red-500 transition-colors py-2'
-          >
-            Theaters
-          </Link>
-          <Link 
-            onClick={scrollToTop} 
-            to="/releases" 
-            className='text-white text-lg font-medium hover:text-red-500 transition-colors py-2'
-          >
-            Releases
-          </Link>
-          <Link 
-            onClick={scrollToTop} 
-            to="/movies" 
-            className='text-white text-lg font-medium hover:text-red-500 transition-colors py-2'
-          >
-            Movies
-          </Link>
-          {favoriteMovies && (
+          <Link onClick={scrollToTop} to="/" className='text-white text-lg font-medium hover:text-red-500 transition-colors py-2'>Home</Link>
+          <Link onClick={scrollToTop} to="/theaters" className='text-white text-lg font-medium hover:text-red-500 transition-colors py-2'>Theaters</Link>
+          <Link onClick={scrollToTop} to="/releases" className='text-white text-lg font-medium hover:text-red-500 transition-colors py-2'>Releases</Link>
+          <Link onClick={scrollToTop} to="/movies" className='text-white text-lg font-medium hover:text-red-500 transition-colors py-2'>Movies</Link>
+          {favoriteMovies.length > 0 && (
             <Link 
               onClick={scrollToTop} 
               to="/favorites" 
-              className='text-white text-lg font-medium hover:text-red-500 transition-colors py-2 flex items-center gap-2'
+              className='text-white text-lg font-medium hover:text-red-500 transition-colors flex items-center gap-2 py-2'
             >
-              Favorites ({favoriteMovies.length})
+              Favorites
+              <span className='bg-red-500 text-white text-xs font-medium px-2 py-0.5 rounded-full'>
+                {favoriteMovies.length}
+              </span>
             </Link>
           )}
         </div>
