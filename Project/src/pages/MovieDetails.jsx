@@ -44,6 +44,7 @@ const MovieDetails = () => {
     </div>
   )
 
+
   const isFavorite = favoriteMovies.some(
     m => m._id === show.movie._id || m.id === show.movie.id
   )
@@ -108,7 +109,7 @@ const MovieDetails = () => {
               className="bg-gray-700 p-2.5 rounded-full transition cursor-pointer active:scale-95"
             >
               <HeartIcon
-                className={`w-5 h-5 ${isFavorite ? 'fill-red-500 text-red-500' : ''}`}
+                className="w-5 h-5 text-red-500 fill-red-500"
               />
             </button>
           </div>
@@ -122,7 +123,7 @@ const MovieDetails = () => {
           {Array.isArray(show.movie.casts) ? show.movie.casts.slice(0, 12).map((cast, index) => (
             <div key={index} className="flex flex-col items-center text-center">
               <img
-                src={cast.profile_path}
+                src={image_base_url + cast.profile_path}
                 alt={`${cast.name} profile`}
                 className="rounded-full h-20 md:h-20 aspect-square object-cover"
               />

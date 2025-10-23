@@ -91,10 +91,29 @@ export const addShow = async (req, res) => {
 // API to get all shows in/from the database
 export const getShows = async (req, res) => {
   try {
+    console.log("Fetching all shows from database...");
     const shows = await Show.find().populate("movie");
-    const uniqueShows = new Set(shows.map(show => show.movie))
+    console.log("Found shows:", shows.length);
+    
+    if (shows.length === 0) {
+      console.log("No shows found in database");
+      return res.json({ success: true, count: 0, shows: [] });
+    }
+    
+    // Log some sample data for debugging
+    console.log("Sample show data:", {
+      firstShow: shows[0] ? {
+        id: shows[0]._id,
+        movie: shows[0].movie ? {
+          id: shows[0].movie._id,
+          title: shows[0].movie.title
+        } : null
+      } : null
+    });
+    
     res.json({ success: true, count: shows.length, shows });
   } catch (error) {
+    console.error("Error fetching shows:", error);
     res.json({ success: false, message: error.message });
   }
 };

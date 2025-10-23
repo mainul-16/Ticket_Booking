@@ -16,6 +16,7 @@ const FeaturedSection = () => {
   const displayShows = (showsArray || [])
     .slice(0, 4)
     .map(item => item.movie || item)
+    .filter(movie => movie) // Remove null/undefined movies
 
   return (
     <div className="relative px-4 md:px-10 lg:px-16 xl:px-20 overflow-hidden">
@@ -27,9 +28,16 @@ const FeaturedSection = () => {
 
       {/* Movies Grid */}
       <div className="flex flex-wrap justify-center gap-8 mt-8">
-        {displayShows.map((movie) => (
-          <MovieCard key={movie._id || movie.id} movie={movie} />
-        ))}
+        {displayShows.length > 0 ? (
+          displayShows.map((movie) => (
+            <MovieCard key={movie._id || movie.id} movie={movie} />
+          ))
+        ) : (
+          <div className="flex flex-col items-center justify-center py-20">
+            <h2 className="text-2xl font-bold text-center text-gray-400">No Movies Available</h2>
+            <p className="text-gray-500 mt-2">Check back later for new releases!</p>
+          </div>
+        )}
       </div>
 
 

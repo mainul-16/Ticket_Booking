@@ -43,16 +43,22 @@ export const AppProvider = ({ children }) => {
   // ✅ Fetch all shows
   const fetchShows = async () => {
     try {
+      console.log("Fetching shows from API...");
       const { data } = await axios.get("/api/show/all");
       console.log("API Response:", data); // Debug log
+      
       if (data.success) {
-        setShows(data.shows);
+        console.log("Shows fetched successfully:", data.shows?.length || 0, "shows");
+        setShows(data.shows || []);
       } else {
-        toast.error(data.message);
+        console.error("API returned error:", data.message);
+        toast.error(data.message || "Failed to fetch shows");
+        setShows([]); // Set empty array on error
       }
     } catch (error) {
-      console.log("Error fetching shows:", error);
+      console.error("Error fetching shows:", error);
       toast.error("Failed to fetch shows");
+      setShows([]); // Set empty array on error
     }
   };
 
@@ -75,15 +81,35 @@ export const AppProvider = ({ children }) => {
   };
 
   // ✅ Update favorite movies
-  const updateFavorite = (movie) => {
-    setFavoriteMovies(prev => {
-      const isAlreadyFavorite = prev.some(m => m._id === movie._id || m.id === movie.id);
-      if (isAlreadyFavorite) {
-        return prev.filter(m => m._id !== movie._id && m.id !== movie.id);
+  const updateFavorite = async (movie) => {
+    try {
+      const token = await getToken();
+      const movieId = movie._id || movie.id;
+      
+      // Call API to update favorites in database
+      const { data } = await axios.post("/api/user/update-favorite", 
+        { movieId }, 
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (data.success) {
+        // Refresh favorites from server to ensure consistency
+        await fetchFavoritesMovies();
+        
+        // Show appropriate toast message
+        const isCurrentlyFavorite = favoriteMovies.some(m => m._id === movie._id || m.id === movie.id);
+        if (isCurrentlyFavorite) {
+          // Movie will be removed - no toast message
+        } else {
+          toast.success("Movie added to favorites");
+        }
       } else {
-        return [...prev, movie];
+        toast.error(data.message || "Failed to update favorites");
       }
-    });
+    } catch (error) {
+      console.log("Error updating favorites:", error);
+      toast.error("Failed to update favorites");
+    }
   };
 
   // Load shows on mount

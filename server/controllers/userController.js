@@ -30,23 +30,34 @@ export const updateFavorite = async (req, res) => {
     // Fetch the user from Clerk
     const user = await clerkClient.users.getUser(userId)
 
-    if (!user.privateMetadata.favorites) {
-      user.privateMetadata.favorites = []
+    // Get current favorites or initialize empty array
+    let favorites = user.privateMetadata.favorites || [];
+
+    console.log("Current favorites:", favorites);
+
+    // Check if movie is already in favorites
+    const isAlreadyFavorite = favorites.includes(movieId);
+    
+    if (!isAlreadyFavorite) {
+      // Add to favorites
+      favorites.push(movieId);
+      console.log("Added movie to favorites. New favorites:", favorites);
+    } else {
+      // Remove from favorites
+      favorites = favorites.filter(item => item !== movieId);
+      console.log("Removed movie from favorites. New favorites:", favorites);
     }
 
-    console.log("Current favorites:", user.privateMetadata.favorites);
+    // Update user metadata with new favorites array
+    await clerkClient.users.updateUserMetadata(userId, { 
+      privateMetadata: { 
+        ...user.privateMetadata, 
+        favorites: favorites 
+      } 
+    });
 
-    if (!user.privateMetadata.favorites.includes(movieId)) {
-      user.privateMetadata.favorites.push(movieId)
-      console.log("Added movie to favorites. New favorites:", user.privateMetadata.favorites);
-    } else{
-        user.privateMetadata.favorites = user.privateMetadata.favorites.filter(item => item !== movieId)
-        console.log("Removed movie from favorites. New favorites:", user.privateMetadata.favorites);
-    }
-
-    await clerkClient.users.updateUserMetadata(userId, { privateMetadata: user.privateMetadata })
-
-    res.json({ success: true, message: "Movie Favorites Updated" })
+    console.log("Final favorites array after update:", favorites);
+    res.json({ success: true, message: "Movie Favorites Updated", favorites: favorites })
   } catch (error) {
     console.error(error.message);
     res.json({ success: false, message: error.message });
@@ -56,14 +67,16 @@ export const updateFavorite = async (req, res) => {
 export const getFavorites = async (req, res) => {
     try {
         const user = await clerkClient.users.getUser(req.auth().userId)
-        const favorites = user.privateMetadata.favorites;
+        const favorites = user.privateMetadata.favorites || [];
 
         console.log("Fetching favorites for user:", req.auth().userId);
         console.log("Favorites array:", favorites);
+        console.log("Favorites array length:", favorites.length);
 
         // Getting movies from database
         const movies = await Movie.find({ _id: { $in: favorites } })
         console.log("Found movies:", movies.length);
+        console.log("Movie IDs found:", movies.map(m => m._id));
         
         res.json({ success: true, movies })
 

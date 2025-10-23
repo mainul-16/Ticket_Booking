@@ -2,6 +2,7 @@ import React from 'react'
 import BlurCircle from '../components/BlurCircle'
 import MovieCard from '../components/MovieCard'
 import { useAppContext } from '../context/AppContext'
+import { dummyShowsData } from '../assets/assets'
 
 const Movies = () => {
   const { shows } = useAppContext()
@@ -43,6 +44,7 @@ const Movies = () => {
       ) : (
         <div className="flex flex-col justify-center h-screen items-center">
           <h1 className="text-3xl font-bold text-center">No Movies Available</h1>
+          <p className="text-gray-400 mt-4">Please check your connection or try again later.</p>
         </div>
       )}
     </div>
