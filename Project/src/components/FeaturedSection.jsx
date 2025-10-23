@@ -1,4 +1,3 @@
-import { ArrowRight } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import React from 'react'
 import BlurCircle from './BlurCircle'
@@ -27,11 +26,12 @@ const FeaturedSection = () => {
       </div>
 
       {/* Movies Grid */}
-      <div className="flex flex-wrap max-sm:justify-center gap-8 mt-8">
+      <div className="flex flex-wrap justify-center gap-8 mt-8">
         {displayShows.map((movie) => (
           <MovieCard key={movie._id || movie.id} movie={movie} />
         ))}
       </div>
+
 
       {/* Show More Button */}
       <div className="flex justify-center mt-20">
